@@ -18,15 +18,44 @@ function ProductList() {
   }, []);
 
   return (
-    <div>
+    <div style={styles.listContainer}>
       {products.map(product => (
-        <div key={product.name}>
-          <img src={product.url} alt={product.name} />
-          <p>{product.name}</p>
+        <div key={product.name} style={styles.productItem}>
+          <img src={product.url} alt={product.name} style={styles.productImage} />
+          <p style={styles.productName}>{product.name}</p>
         </div>
       ))}
     </div>
   );
 }
+
+const styles = {
+  listContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '20px',
+  },
+  productItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: '20px',
+    width: '200px',
+    textAlign: 'center',
+    boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
+    borderRadius: '10px',
+    padding: '10px',
+  },
+  productImage: {
+    width: '100%',
+    height: 'auto',
+    borderRadius: '10px',
+  },
+  productName: {
+    fontSize: '16px',
+    marginTop: '10px',
+  },
+};
 
 export default ProductList;
