@@ -18,7 +18,7 @@ const tableClient = new TableClient(
 const blobServiceClient = new BlobServiceClient(
     `${process.env.AZURE_BLOB_URL}?${process.env.AZURE_SAS_TOKEN}`
 );
-const containerClient = blobServiceClient.getContainerClient('product-images');
+const containerClient = blobServiceClient.getContainerClient('sapataria');
 
 // Rota para salvar preferências no Table Storage
 app.post('/preferences', async (req, res) => {
@@ -47,7 +47,7 @@ app.get('/products', async (req, res) => {
         for await (const blob of containerClient.listBlobsFlat()) {
             products.push({
                 name: blob.name,
-                url: `${process.env.AZURE_BLOB_URL}product-images/${blob.name}?${process.env.AZURE_SAS_TOKEN}`
+                url: `${process.env.AZURE_BLOB_URL}sapataria/${blob.name}?${process.env.AZURE_SAS_TOKEN}`
             });
         }
 
@@ -58,7 +58,7 @@ app.get('/products', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
