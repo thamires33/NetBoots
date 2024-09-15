@@ -1,53 +1,47 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { TableClient } = require("@azure/data-tables");
 const { BlobServiceClient } = require("@azure/storage-blob");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Conexão ao Azure Table Storage usando SAS Token
-const tableClient = new TableClient(
-    `${process.env.AZURE_TABLE_URL}?${process.env.AZURE_SAS_TOKEN}`, 
-    'ProductTable'
-);
-
-// Conexão ao Azure Blob Storage usando SAS Token
 const blobServiceClient = new BlobServiceClient(
     `${process.env.AZURE_BLOB_URL}?${process.env.AZURE_SAS_TOKEN}`
 );
 const containerClient = blobServiceClient.getContainerClient('sapataria');
 
-// Rota para salvar preferências no Table Storage
-app.post('/preferences', async (req, res) => {
-    const { userId, preferences } = req.body;
+app.post('/search-shoes', async (req, res) => {
+    const { query } = req.body; // termo de busca do front
     
     try {
-        const entity = {
-            partitionKey: 'userPreferences',
-            rowKey: userId,
-            preferences: JSON.stringify(preferences),
-        };
-        await tableClient.createEntity(entity);
-        res.status(201).send('Preferences saved successfully');
-    } catch (error) {
-        console.error('Error saving preferences:', error);
-        res.status(500).send('Failed to save preferences');
-    }
-});
+        const products = [];
+        for await (const blob of containerClient.listBlobsFlat()) {
+            if (blob.name.toLowerCase().includes(query.toLowerCase())) {
+                products.push({
+                    name: blob.name,
+                    url: `${process.env.AZURE_BLOB_URL}/sapataria/${blob.name}?${process.env.AZURE_SAS_TOKEN}`
+                });
+            }
+        }
 
-// Rota para obter produtos e suas imagens do Blob Storage
+        res.json(products);
+    } catch (error) {
+        console.error('Error fetching products:', error);  
+        res.status(500).send('Failed to fetch products');  
+    }
+    
+});
+// servindo apenas para consulta
 app.get('/products', async (req, res) => {
     try {
         const products = [];
 
-        // Listando blobs do container
         for await (const blob of containerClient.listBlobsFlat()) {
             products.push({
                 name: blob.name,
-                url: `${process.env.AZURE_BLOB_URL}sapataria/${blob.name}?${process.env.AZURE_SAS_TOKEN}`
+                url: `${process.env.AZURE_BLOB_URL}/sapataria/${blob.name}?${process.env.AZURE_SAS_TOKEN}`
             });
         }
 

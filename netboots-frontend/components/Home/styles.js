@@ -8,6 +8,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 
+  //renderização das imagens
+  resultImage: {
+    width: width * 0.8, 
+    height: 200, 
+    resizeMode: 'contain', 
+  },
+  resultItem: {
+    marginBottom: 20, 
+  },
+
   scrollView: {
     flex: 1,
     backgroundColor: '#EAEAEA',

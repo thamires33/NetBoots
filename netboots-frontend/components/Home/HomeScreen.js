@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import styles from './styles';
+import { searchShoes } from './api';
 
 const { width } = Dimensions.get('window');
 
@@ -58,6 +59,19 @@ const HomeScreen = () => {
         productScrollViewRef.current?.scrollTo({ x: prevIndex * scrollStep, animated: true });
     };
     //#endregion
+    //#region buscar imagens
+    const [query, setQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+
+    const handleSearch = async () => {
+        try {
+            const results = await searchShoes(query); // Chama a função que faz a consulta à API
+            setSearchResults(results);
+        } catch (error) {
+            console.error("Erro ao buscar resultados:", error);
+        }
+    };
+    //#endregion
     return (
         <View style={styles.container}>
 
@@ -66,7 +80,19 @@ const HomeScreen = () => {
                 <TextInput
                     style={styles.searchBar}
                     placeholder="O que você está procurando?"
+                    value={query}
+                    onChangeText={(text) => setQuery(text)}
+                    onSubmitEditing={handleSearch} 
                 />
+
+                <ScrollView style={styles.resultsContainer}> 
+                    {searchResults.map((result, index) => (
+                        <View key={index} style={styles.resultItem}>
+                            <Image source={{ uri: result.url }} style={styles.resultImage} />
+                        </View>
+                    ))}
+                </ScrollView>
+
 
                 <View style={styles.headerIcons}>
                     <TouchableOpacity style={styles.iconButton}>
@@ -92,28 +118,28 @@ const HomeScreen = () => {
                         <Text style={styles.optionText}>Informe seu CEP</Text>
                     </TouchableOpacity>
                     <View style={styles.optionBar2}>
-                    <TouchableOpacity style={styles.optionButton1}>
-                        <FontAwesome name="bars" size={16} color="black" />
-                        <Text style={styles.optionText1}>Todas as categorias</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionButton}>
-                        <Text style={styles.optionText}>SPORTSTYLE</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionButton}>
-                        <Text style={styles.optionText}>CORRIDA</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionButton}>
-                        <Text style={styles.optionText}>LOJAS PARCEIRAS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionButton}>
-                        <Text style={styles.optionText}>PARCEIRO NETBOOTS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionButton}>
-                        <Text style={styles.optionText}>CUPONS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.optionButton}>
-                        <Text style={styles.optionText}>N CARD</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionButton1}>
+                            <FontAwesome name="bars" size={16} color="black" />
+                            <Text style={styles.optionText1}>Todas as categorias</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionButton}>
+                            <Text style={styles.optionText}>SPORTSTYLE</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionButton}>
+                            <Text style={styles.optionText}>CORRIDA</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionButton}>
+                            <Text style={styles.optionText}>LOJAS PARCEIRAS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionButton}>
+                            <Text style={styles.optionText}>PARCEIRO NETBOOTS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionButton}>
+                            <Text style={styles.optionText}>CUPONS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionButton}>
+                            <Text style={styles.optionText}>N CARD</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
