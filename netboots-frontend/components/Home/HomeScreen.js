@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import Modal from 'react-native-modal'; // Certifique-se de ter instalado o 'react-native-modal'
 import styles from './styles';
 import { searchShoes } from './api';
+import QuizModal from '../QuizModal'; // Verifique o caminho correto para sua modal
 
 const { width } = Dimensions.get('window');
 
 const HomeScreen = () => {
-    //#region carrossel1
     const scrollViewRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const images = [
@@ -19,19 +20,13 @@ const HomeScreen = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => {
-                const nextIndex = (prevIndex + 1) % images.length;
-                scrollViewRef.current?.scrollTo({ x: nextIndex * imageWidth, animated: true });
-                return nextIndex;
-            });
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
         }, 3000);
         return () => clearInterval(interval);
-    }, [images.length, imageWidth]);
-    //#endregion
-    //#region carrossel2  
+    }, [images.length]);
+
     const productScrollViewRef = useRef(null);
     const [productIndex, setProductIndex] = useState(0);
-
     const products = [
         { id: 1, title: "Produto 1", price: "R$ 100,00", image: require('./produtos/product1.png') },
         { id: 2, title: "Produto 2", price: "R$ 200,00", image: require('./produtos/product1.png') },
@@ -58,20 +53,39 @@ const HomeScreen = () => {
         setProductIndex(prevIndex);
         productScrollViewRef.current?.scrollTo({ x: prevIndex * scrollStep, animated: true });
     };
-    //#endregion
-    //#region buscar imagens
+
     const [query, setQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
     const handleSearch = async () => {
         try {
-            const results = await searchShoes(query); // Chama a função que faz a consulta à API
+            const results = await searchShoes(query); // Função fictícia para buscar produtos
             setSearchResults(results);
         } catch (error) {
             console.error("Erro ao buscar resultados:", error);
         }
     };
-    //#endregion
+
+    const [isQuizModalVisible, setIsQuizModalVisible] = useState(false);
+    const [preferences, setPreferences] = useState({
+        sports: false,
+        running: false,
+        stores: false,
+    });
+
+    const openQuizModal = () => {
+        setIsQuizModalVisible(true);
+    };
+
+    const closeQuizModal = () => {
+        setIsQuizModalVisible(false);
+    };
+
+    const handleSubmitQuiz = () => {
+        console.log('Preferências selecionadas:', preferences);
+        setIsQuizModalVisible(false); // Fechar a modal após a submissão do quiz
+    };
+
     return (
         <View style={styles.container}>
 
@@ -82,17 +96,16 @@ const HomeScreen = () => {
                     placeholder="O que você está procurando?"
                     value={query}
                     onChangeText={(text) => setQuery(text)}
-                    onSubmitEditing={handleSearch} 
+                    onSubmitEditing={handleSearch}
                 />
 
-                <ScrollView style={styles.resultsContainer}> 
+                <ScrollView style={styles.resultsContainer}>
                     {searchResults.map((result, index) => (
                         <View key={index} style={styles.resultItem}>
                             <Image source={{ uri: result.url }} style={styles.resultImage} />
                         </View>
                     ))}
                 </ScrollView>
-
 
                 <View style={styles.headerIcons}>
                     <TouchableOpacity style={styles.iconButton}>
@@ -140,10 +153,13 @@ const HomeScreen = () => {
                         <TouchableOpacity style={styles.optionButton}>
                             <Text style={styles.optionText}>N CARD</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity style={styles.optionButton} onPress={openQuizModal}>
+                            <Text style={styles.optionText}>QUIZ DE PREFERÊNCIAS</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
-                {/* Carrossel de Imagens */}
+                {/* Carousel de Imagens */}
                 <ScrollView
                     ref={scrollViewRef}
                     horizontal
@@ -158,7 +174,7 @@ const HomeScreen = () => {
                     ))}
                 </ScrollView>
 
-                {/* Carrossel de Produtos */}
+                {/* Carousel de Produtos */}
                 <View style={styles.productCarouselContainer}>
                     <TouchableOpacity style={styles.navButtonLeft} onPress={handlePrevProduct}>
                         <FontAwesome name="chevron-left" size={24} color="black" />
@@ -183,6 +199,10 @@ const HomeScreen = () => {
                         <FontAwesome name="chevron-right" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
+
+                {/* Modal de Quiz de Preferências */}
+                <QuizModal isVisible={isQuizModalVisible} onClose={closeQuizModal} />
+
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>© 2024 NetBoots. Todos os direitos reservados.</Text>
                 </View>

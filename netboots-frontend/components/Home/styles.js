@@ -24,14 +24,12 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    //height: '15%', //gambiarra?
     backgroundColor: '#8000FF',
     paddingVertical: 15,
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-
   },
   logo: {
     marginLeft: 30,
@@ -70,23 +68,26 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
   },
   optionBar2: {
     backgroundColor: '#EAEAEA',
-    paddingHorizontal: 25,
+    paddingHorizontal: 15,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   optionButton1: {
     flexDirection: 'row',
     alignItems: 'center',
+    margin: 5,
   },
   optionButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 5,
+    margin: 5,
   },
   optionText1: {
     marginLeft: 5,
@@ -116,7 +117,8 @@ const styles = StyleSheet.create({
   productCarouselContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 150,
+    marginHorizontal: 0,
+    paddingHorizontal: 10,
   },
   productCarousel: {
     flex: 1,
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderRadius: 8,
     padding: 15,
-    marginHorizontal: 2,
+    marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 3,
