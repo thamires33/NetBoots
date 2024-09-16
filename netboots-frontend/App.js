@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { StatusBar } from 'expo-status-bar';
 import HomeScreen from './components/Home/HomeScreen';
+import QuizModal from './components/QuizModal';
+import ImageDisplayScreen from './components/ImageDisplayScreen';
 
 
 const Stack = createStackNavigator();
