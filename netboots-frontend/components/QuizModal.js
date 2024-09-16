@@ -5,8 +5,8 @@ const QuizModal = ({ isVisible, onClose, onConfirm }) => {
     const [stylesChecked, setStylesChecked] = useState({
         casual: false,
         formal: false,
-        sporty: false,
-        elegant: false,
+        esportivo: false,
+        elegante: false,
     });
 
     const handleStyleToggle = (style) => {
@@ -37,16 +37,16 @@ const QuizModal = ({ isVisible, onClose, onConfirm }) => {
                         <Text style={styles.checkboxText}>Formal</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={[styles.checkbox, stylesChecked.sporty && styles.checkboxChecked]}
-                        onPress={() => handleStyleToggle('sporty')}
+                        style={[styles.checkbox, stylesChecked.esportivo && styles.checkboxChecked]}
+                        onPress={() => handleStyleToggle('esportivo')}
                     >
-                        <Text style={styles.checkboxText}>Sporty</Text>
+                        <Text style={styles.checkboxText}>Esportivo</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.checkbox, stylesChecked.elegant && styles.checkboxChecked]}
-                        onPress={() => handleStyleToggle('elegant')}
+                        onPress={() => handleStyleToggle('elegante')}
                     >
-                        <Text style={styles.checkboxText}>Elegant</Text>
+                        <Text style={styles.checkboxText}>Elegante</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>

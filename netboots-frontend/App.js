@@ -14,6 +14,8 @@ export default function App() {
 
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen}/>
+          <Stack.Screen name="QuizModal" component={QuizModal} />
+          <Stack.Screen name="ImageDisplayScreen" component={ImageDisplayScreen} options={{ title: 'Sugestões Personalizadas' }}/>
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>
