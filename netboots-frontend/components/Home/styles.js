@@ -8,20 +8,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 
-  //renderização das imagens
-  resultImage: {
-    width: width * 0.8, 
-    height: 200, 
-    resizeMode: 'contain', 
-  },
-  resultItem: {
-    marginBottom: 20, 
-  },
+  resultsContainer: {
+     position: 'absolute',
+     top: 100,
+    },
 
-  scrollView: {
-    flex: 1,
-    backgroundColor: '#EAEAEA',
-  },
+    resultItem: {
+      marginRight: 5,     
+    },
+  
+    resultImage: {
+      width: width * 0.2,         
+      height: 200,                
+      resizeMode: 'contain',     
+    },
 
   header: {
     //height: '15%', //gambiarra?
@@ -158,7 +158,10 @@ const styles = StyleSheet.create({
 
   //Rodapé
   footer: {
-    padding: 20,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     backgroundColor: '#333',
     alignItems: 'center',
   },

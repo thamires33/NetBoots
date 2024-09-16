@@ -11,9 +11,9 @@ const HomeScreen = () => {
     const scrollViewRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const images = [
-        require('./produtos/lulu.png'),
-        require('./produtos/lulu.png'),
-        require('./produtos/lulu.png'),
+        require('./produtos/adidas3.jpg'),
+        require('./produtos/nike2.jpeg'),
+        require('./produtos/adidas2.jpeg'),
     ];
     const imageWidth = width;
 
@@ -82,17 +82,8 @@ const HomeScreen = () => {
                     placeholder="O que você está procurando?"
                     value={query}
                     onChangeText={(text) => setQuery(text)}
-                    onSubmitEditing={handleSearch} 
+                    onSubmitEditing={handleSearch}
                 />
-
-                <ScrollView style={styles.resultsContainer}> 
-                    {searchResults.map((result, index) => (
-                        <View key={index} style={styles.resultItem}>
-                            <Image source={{ uri: result.url }} style={styles.resultImage} />
-                        </View>
-                    ))}
-                </ScrollView>
-
 
                 <View style={styles.headerIcons}>
                     <TouchableOpacity style={styles.iconButton}>
@@ -183,10 +174,24 @@ const HomeScreen = () => {
                         <FontAwesome name="chevron-right" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}>© 2024 NetBoots. Todos os direitos reservados.</Text>
-                </View>
+
+                {searchResults.length > 0 && (
+
+                    <ScrollView horizontal style={[styles.resultsContainer]}>
+
+                        {searchResults.map((result, index) => (
+                            <View key={index} style={styles.resultItem}>
+                                <Image source={{ uri: result.url }} style={styles.resultImage} />
+                            </View>
+                        ))}
+
+                    </ScrollView>
+
+                )}
             </ScrollView>
+            <View style={styles.footer}>
+                <Text style={styles.footerText}>© 2024 NetBoots. Todos os direitos reservados.</Text>
+            </View>
         </View>
     );
 };
